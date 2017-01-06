@@ -1,0 +1,71 @@
+{{#section 'head'}}
+    <!-- we want Google to ignore this page -->
+    <meta name="robots" content="noindex">
+{{/section}}
+{{{_sections.head}}}
+{{> header}}
+{{!这里是handlebars的注释}}
+{{> footer}}
+<!--这是html注释-->
+
+dddddddddddddddddddddddsdf23423
+<p>{{format '2015/12/12'}}</p>
+
+<h1>content====add{{link}}</h1>
+
+
+<p>{{data.username}}</p>
+<p>{{data.age}}</p>
+<p>{{data.address}}</p>
+
+{{#each data}}
+    {{@key}}===>{{.}}
+{{/each}}
+
+<hr>
+{{#each students}}
+    <h3>{{name}}==>{{age}}</h3>
+    {{#if ../data}}
+        <h4>{{../../data.username}}==>{{../../data.age}}==={{../../data.address}}</h4>
+    {{/if}}
+{{/each}}
+<hr>
+
+
+<p>{{link}}</p>
+{{#if link}}
+    <h5>如果连接不为空，进入这里</h5>
+{{else}}
+    <h5>等于空们进入这里....</h5>
+{{/if}}
+
+{{#unless link}}
+    <h5>等于空们进入这里....</h5>
+{{else}}
+    <h5>如果连接不为空，进入这里</h5>
+{{/unless}}
+
+<hr>
+
+
+<p>{{books}}</p>
+{{#each books}}
+    {{#if @first}}
+        <h3>如果是第一个元素进入这里....</h3>
+    {{/if}}
+        <h2>{{@index}}===>{{.}}</h2>
+    {{#if @last}}
+    <h3>如果是最后元素进入这里....</h3>
+    {{/if}}
+{{else}}
+    <h1>如果数组没有数据进入这里.....</h1>
+{{/each}}
+
+{{#section 'jquery'}}
+    <script>
+        $('document').ready(function(){
+            $('h1').html('jQuery Works');
+        });
+    </script>
+{{/section}}
+{{{_sections.jquery}}}

@@ -5,16 +5,26 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+//构建模块
+//var build = require("./core/build").create("content");
 
 //路由
-var index = require('./routes/index');
-var users = require('./routes/users');
-global.courses = require('./routes/course');
+var core = require("./core/core");
 
 //引入handlebars的模板对象
 var handlebars = require("express3-handlebars").create({
   defaultLayout:"main",
-  extname:".html"
+  extname:".html",
+  helpers:{
+      section:function(name,options){
+        if(!this._sections)this._sections = {};
+        this._sections[name] = options.fn(this);
+        return null;
+      },
+      format:function(date,options){
+          return new Date(date).toLocaleString();
+      }
+  }
 });
 
 
@@ -25,8 +35,10 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
 */
 
+app.disable("x-powered-by");
 app.engine("html",handlebars.engine);
 app.set('view engine', 'html');
+/*app.set("view cache",true);*/
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -42,17 +54,16 @@ app.use(function(req,res,next){
     next();
 });
 
+//路由注册
+core.create(app);
 
-app.use('/', index);
-app.use('/users', users);
-var arr = [courses];
-for(var j=0;j<arr.length;j++) {
-    var length = arr[j].stack.length;
-    for (var i = 0; i < length; i++) {
-        var route = arr[j].stack[i].route;
-        app.use(route.path, arr[j]);
-    }
-};
+//handlbars的局部文件 partial
+app.use(function(req,res,next){
+  if(!res.locals.commons)res.locals.partials = {};
+    res.locals.partials.header = {};
+    res.locals.partials.footer = {};
+    next();
+});
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

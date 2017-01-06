@@ -1,3 +1,6 @@
+ctrl+shift+f:批量查找
+ctrl+shift+r:批量替换
+
 
 1:express3-handlebars--模板安装
 npm install express3-handlebars --save-dev
